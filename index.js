@@ -15,7 +15,6 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 function verifyJWT(req, res, next) {
     const authHeader = req.headers.authorization;
-    console.log(authHeader);
 
     if (!authHeader) {
         return res.status(401).send({ message: 'unauthorized access' })
@@ -63,6 +62,12 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const service = await serviceCollection.findOne(query)
             res.send(service);
+        })
+
+        app.post('/addService', verifyJWT, async (req, res) => {
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service);
+            res.send(result);
         })
 
         // reviews api
