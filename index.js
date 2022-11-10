@@ -73,7 +73,7 @@ async function run() {
         // reviews api
         app.get('/myReview', verifyJWT, async (req, res) => {
             const decoded = req.decoded;
-            console.log('inside reviews api', decoded);
+            // console.log('inside reviews api', decoded);
             if (decoded.email !== req.query.email) {
                 res.status(403).send({ message: 'unauthorized access' })
             }
