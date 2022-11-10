@@ -89,16 +89,12 @@ async function run() {
             res.send(myReview);
         })
 
-        app.get('/myReviews', async (req, res) => {
-            let query = {};
-            if (req.query.email) {
-                query = {
-                    email: req.query.email
-                }
-            }
-            const cursor = reviewCollection.find(query);
-            const myReview = await cursor.toArray();
-            res.send(myReview);
+        app.get('/myReviews/:id', async (req, res) => {
+            const id = req.params.id;
+            let query = { _id: ObjectId(id) };
+            const cursor = reviewCollection.findOne(query);
+            const myReviews = await cursor.toArray();
+            res.send(myReviews);
         })
 
         app.post('/reviews', verifyJWT, async (req, res) => {
