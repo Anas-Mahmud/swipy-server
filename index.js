@@ -89,6 +89,18 @@ async function run() {
             res.send(myReview);
         })
 
+        app.get('/myReviews', async (req, res) => {
+            let query = {};
+            if (req.query.email) {
+                query = {
+                    email: req.query.email
+                }
+            }
+            const cursor = reviewCollection.find(query);
+            const myReview = await cursor.toArray();
+            res.send(myReview);
+        })
+
         app.post('/reviews', verifyJWT, async (req, res) => {
             const review = req.body;
             const result = await reviewCollection.insertOne(review);
